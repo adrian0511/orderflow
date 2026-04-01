@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
         ErrorResponse error = ErrorResponse.builder()
-                .service("user-service")
+                .service("product-service")
                 .path(request.getRequestURI())
                 .status(HttpStatus.NOT_FOUND.value())
                 .message(ex.getMessage())
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
                 .orElse("Validation error");
 
         ErrorResponse error = ErrorResponse.builder()
-                .service("user-service")
+                .service("product-service")
                 .path(request.getRequestURI())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .message(errorMessage)
