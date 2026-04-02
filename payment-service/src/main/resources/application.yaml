@@ -1,17 +1,15 @@
 spring:
   application:
-    name: inventory-service
+    name: payment-service
 
   kafka:
     bootstrap-servers: localhost:9092
 
-
-
   # Database configuration
   datasource:
-    url: jdbc:postgresql://localhost:5432/inventorydb
-    username: ${INVENTORY_DB_USER}
-    password: ${INVENTORY_DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/paymentdb
+    username: ${PAYMENT_DB_USER}
+    password: ${PAYMENT_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   database-platform: org.hibernate.dialect.PostgreSQLDialect
 
@@ -23,6 +21,5 @@ spring:
       hibernate:
         format_sql: true
 
-
 server:
-  port: 8003
+  port: 8005

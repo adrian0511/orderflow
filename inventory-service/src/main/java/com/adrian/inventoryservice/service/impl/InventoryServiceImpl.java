@@ -77,7 +77,7 @@ public class InventoryServiceImpl implements IInventoryService {
         Inventory inventory = repository.findByProductId(request.getProductId())
                 .orElseThrow(() -> new InventoryNotFoundException("Inventory not found with product id: " + request.getProductId()));
 
-        inventory.setQuantity(inventory.getQuantity() - request.getQuantity());
+        inventory.setReserved(inventory.getReserved() - request.getQuantity());
 
         repository.save(inventory);
 
@@ -89,7 +89,7 @@ public class InventoryServiceImpl implements IInventoryService {
         Inventory inventory = repository.findByProductId(request.getProductId())
                 .orElseThrow(() -> new InventoryNotFoundException("Inventory not found with product id: " + request.getProductId()));
 
-        inventory.setQuantity(inventory.getQuantity() - request.getQuantity());
+        inventory.setReserved(inventory.getReserved() - request.getQuantity());
         inventory.setQuantity(inventory.getQuantity() + request.getQuantity());
 
         repository.save(inventory);
