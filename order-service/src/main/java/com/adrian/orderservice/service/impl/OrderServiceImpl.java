@@ -10,7 +10,7 @@ import com.adrian.orderservice.dto.response.OrderResponse;
 import com.adrian.orderservice.dto.response.ProductResponse;
 import com.adrian.orderservice.entity.Order;
 import com.adrian.orderservice.entity.OrderItem;
-import com.adrian.orderservice.exception.order.OrderNotFoundException;
+import com.adrian.orderservice.exception.OrderNotFoundException;
 import com.adrian.orderservice.integration.InventoryIntegrationService;
 import com.adrian.orderservice.integration.ProductIntegrationService;
 import com.adrian.orderservice.integration.UserIntegrationService;
@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,11 +51,9 @@ public class OrderServiceImpl implements IOrderService {
                 .userId(request.getUserId())
                 .status(Status.CREATED)
                 .paymentToken(request.getPaymentToken())
+                .createdAt(LocalDateTime.now())
                 .build();
 
-        order = repository.save(order);
-
-        order.setIdempotencyKey(order.getId());
         BigDecimal total = BigDecimal.ZERO;
         List<OrderItem> items = new ArrayList<>();
         for (OrderItemRequest itemRequest : request.getItems()) {
@@ -87,7 +86,7 @@ public class OrderServiceImpl implements IOrderService {
                 .userId(order.getUserId())
                 .amount(order.getTotalAmount())
                 .paymentToken(order.getPaymentToken())
-                .idempotencyKey(order.getIdempotencyKey())
+                .idempotencyKey(order.getId())
                 .build();
 
         kafkaTemplate.send("order.stock.reserved", event);

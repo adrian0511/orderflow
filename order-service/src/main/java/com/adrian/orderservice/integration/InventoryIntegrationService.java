@@ -2,6 +2,10 @@ package com.adrian.orderservice.integration;
 
 import com.adrian.orderservice.client.InventoryClient;
 import com.adrian.orderservice.dto.request.InventoryRequest;
+import com.adrian.orderservice.exception.BusinessConflictException;
+import com.adrian.orderservice.exception.ResourceNotFoundException;
+import com.adrian.orderservice.exception.ServiceUnavailableException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +15,16 @@ public class InventoryIntegrationService {
     @Autowired
     private InventoryClient client;
 
+    @CircuitBreaker(name = "inventoryService", fallbackMethod = "fallbackReserveStock")
     public void reserveStock(InventoryRequest request) {
         client.reserveStock(request);
+    }
+
+    public void fallbackReserveStock(InventoryRequest request, Throwable th) {
+
+        if (th instanceof ResourceNotFoundException || th instanceof BusinessConflictException)
+            throw (RuntimeException) th;
+
+        throw new ServiceUnavailableException(th.getMessage());
     }
 }

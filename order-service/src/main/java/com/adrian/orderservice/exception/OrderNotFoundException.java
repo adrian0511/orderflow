@@ -1,4 +1,4 @@
-package com.adrian.orderservice.exception.order;
+package com.adrian.orderservice.exception;
 
 public class OrderNotFoundException extends RuntimeException {
     public OrderNotFoundException(String message) {

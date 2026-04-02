@@ -32,7 +32,6 @@ public class Order {
 
     private LocalDateTime createdAt = LocalDateTime.now();
     private String paymentToken;
-    private String idempotencyKey;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "order")
     private List<OrderItem> items;

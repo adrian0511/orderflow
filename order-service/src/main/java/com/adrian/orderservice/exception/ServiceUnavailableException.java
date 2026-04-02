@@ -1,4 +1,4 @@
-package com.adrian.orderservice.exception.service;
+package com.adrian.orderservice.exception;
 
 public class ServiceUnavailableException extends RuntimeException {
     public ServiceUnavailableException(String message) {
