@@ -8,9 +8,7 @@ import java.util.List;
 public interface IOrderService {
 
     OrderResponse create(OrderRequest request);
-
-    void cancelOrder(String orderId);
-
+    
     List<OrderResponse> getOrdersByUserId(String userId);
 
     void paymentCompleted(String orderId);

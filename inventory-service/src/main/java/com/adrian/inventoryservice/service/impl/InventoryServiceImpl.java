@@ -6,6 +6,7 @@ import com.adrian.inventoryservice.entity.Inventory;
 import com.adrian.inventoryservice.exception.InsufficientStockException;
 import com.adrian.inventoryservice.exception.InventoryAlreadyExistsException;
 import com.adrian.inventoryservice.exception.InventoryNotFoundException;
+import com.adrian.inventoryservice.integration.ProductIntegrationService;
 import com.adrian.inventoryservice.mapper.InventoryMapper;
 import com.adrian.inventoryservice.repository.InventoryRepository;
 import com.adrian.inventoryservice.service.interf.IInventoryService;
@@ -19,14 +20,16 @@ public class InventoryServiceImpl implements IInventoryService {
 
     private final InventoryRepository repository;
     private final InventoryMapper mapper;
+    private final ProductIntegrationService productIntegrationService;
 
 
     @Override
     @Transactional
     public InventoryResponse createInventory(InventoryRequest request) {
-
         if (repository.findByProductId(request.getProductId()).isPresent())
             throw new InventoryAlreadyExistsException("Inventory already exists by product id:" + request.getProductId());
+
+        productIntegrationService.existsProductById(request.getProductId());
 
         Inventory inventory = Inventory.builder()
                 .productId(request.getProductId())

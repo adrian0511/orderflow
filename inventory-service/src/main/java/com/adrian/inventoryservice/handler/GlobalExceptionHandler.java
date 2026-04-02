@@ -1,9 +1,7 @@
 package com.adrian.inventoryservice.handler;
 
 import com.adrian.inventoryservice.dto.response.ErrorResponse;
-import com.adrian.inventoryservice.exception.InsufficientStockException;
-import com.adrian.inventoryservice.exception.InventoryAlreadyExistsException;
-import com.adrian.inventoryservice.exception.InventoryNotFoundException;
+import com.adrian.inventoryservice.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +17,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InventoryNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleInventoryNotFoundException(
             InventoryNotFoundException ex,
+            HttpServletRequest request
+    ) {
+        ErrorResponse error = ErrorResponse.builder()
+                .service("inventory-service")
+                .path(request.getRequestURI())
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
+            ResourceNotFoundException ex,
             HttpServletRequest request
     ) {
         ErrorResponse error = ErrorResponse.builder()
@@ -83,5 +97,21 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(ServiceUnavailableException.class)
+    public ResponseEntity<ErrorResponse> handleServiceUnavailableException(
+            ServiceUnavailableException ex,
+            HttpServletRequest request
+    ) {
+        ErrorResponse error = ErrorResponse.builder()
+                .service("order-service")
+                .path(request.getRequestURI())
+                .status(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .message(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(error);
     }
 }

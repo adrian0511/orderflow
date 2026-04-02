@@ -69,7 +69,6 @@ public class OrderServiceImpl implements IOrderService {
 
         order.setItems(items);
         order.setTotalAmount(total);
-        order = repository.save(order);
 
         for (OrderItem item : items) {
             InventoryRequest reserveRequest = new InventoryRequest();
@@ -95,13 +94,11 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public void cancelOrder(String orderId) {
-
-    }
-
-    @Override
+    @Transactional(readOnly = true)
     public List<OrderResponse> getOrdersByUserId(String userId) {
-        return List.of();
+        return repository.findByUserId(userId).stream()
+                .map(mapper::toResponse)
+                .toList();
     }
 
     @Override
