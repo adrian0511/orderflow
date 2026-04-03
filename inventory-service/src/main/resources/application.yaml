@@ -23,9 +23,6 @@ spring:
       hibernate:
         format-sql: true
 
-server:
-  port: ${SERVER_PORT:0}
-
 eureka:
   client:
     service-url:
@@ -34,4 +31,4 @@ eureka:
     fetch-registry: true
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.application.name}:${server.port}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

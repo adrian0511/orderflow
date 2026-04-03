@@ -11,7 +11,7 @@ spring:
     username: ${PAYMENT_DB_USER}
     password: ${PAYMENT_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
-    
+
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -32,4 +32,4 @@ eureka:
     fetch-registry: true
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.application.name}:${server.port}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

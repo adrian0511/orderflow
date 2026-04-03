@@ -28,5 +28,15 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
   instance:
+    health-check-url-path: /actuator/health
+    status-page-url-path: /actuator/info
     prefer-ip-address: true
-    instance-id: ${spring.application.name}:${server.port}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+management:
+  health:
+    db:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
