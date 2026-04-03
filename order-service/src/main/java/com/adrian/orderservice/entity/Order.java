@@ -30,7 +30,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
     private String paymentToken;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "order")

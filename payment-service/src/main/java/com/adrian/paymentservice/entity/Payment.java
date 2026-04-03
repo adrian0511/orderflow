@@ -32,6 +32,6 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private Status status;
     private String gatewayResponse;
-    private LocalDateTime processedAt = LocalDateTime.now();
+    private LocalDateTime processedAt;
 
 }

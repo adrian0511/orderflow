@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "inventory-service", path = "/api/inventories", url = "http://localhost:8003")
+@FeignClient(name = "inventory-service", path = "/api/inventories")
 public interface InventoryClient {
 
     @PostMapping("/reserve")

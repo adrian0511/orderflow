@@ -8,15 +8,25 @@ spring:
     username: ${PRODUCT_DB_USER}
     password: ${PRODUCT_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
-  database-platform: org.hibernate.dialect.PostgreSQLDialect
-
+    
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format-sql: true
 
 server:
-  port: 8002
+  port: ${SERVER_PORT:0}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
