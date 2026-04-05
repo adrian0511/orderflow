@@ -7,9 +7,7 @@ import com.adrian.userservice.exception.UserNotFoundException;
 import com.adrian.userservice.mapper.UserMapper;
 import com.adrian.userservice.repository.UserRepository;
 import com.adrian.userservice.service.interf.IUserService;
-import com.adrian.userservice.util.Role;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
 
-    private final PasswordEncoder passwordEncoder;
     private final UserMapper mapper;
     private final UserRepository repository;
 
@@ -28,10 +25,9 @@ public class UserServiceImpl implements IUserService {
     @Transactional
     public UserResponse register(UserRequest request) {
         User user = User.builder()
+                .id(request.getId())
                 .username(request.getUsername())
                 .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER) // Default role is USER
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -62,9 +58,6 @@ public class UserServiceImpl implements IUserService {
 
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
-        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
-        }
 
         return mapper.toResponse(repository.save(user));
     }

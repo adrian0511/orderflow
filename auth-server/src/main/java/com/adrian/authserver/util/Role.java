@@ -1,4 +1,4 @@
-package com.adrian.userservice.util;
+package com.adrian.authserver.util;
 
 public enum Role {
     ADMIN,

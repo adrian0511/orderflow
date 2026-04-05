@@ -1,6 +1,24 @@
 spring:
   application:
     name: api-gateway
+  security:
+    oauth2:
+      client:
+        registration:
+          gateway-client:
+            provider: auth-server
+            client-id: gateway-client
+            client-secret: gateway-secret
+            authorization-grant-type: authorization_code
+            scope: openid,profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          auth-server:
+            issuer-uri: http://localhost:9000
+
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9000
 
 server:
   port: 8080

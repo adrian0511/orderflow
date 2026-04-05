@@ -5,7 +5,6 @@ import com.adrian.userservice.dto.response.UserResponse;
 import com.adrian.userservice.service.interf.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final IUserService service;
-
-    @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody @Valid UserRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.register(request));
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getById(@PathVariable String id) {

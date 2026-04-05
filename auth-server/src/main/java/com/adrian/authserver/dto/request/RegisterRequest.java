@@ -1,6 +1,8 @@
-package com.adrian.userservice.dto.request;
+package com.adrian.authserver.dto.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,12 +10,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequest {
+public class RegisterRequest {
 
     @NotBlank
-    private String id;
-    @NotBlank(message = "Username is required")
     private String username;
-    @NotBlank(message = "Email is required")
+    @NotBlank
+    @Size(min = 6)
+    private String password;
+    @Email
     private String email;
+
 }

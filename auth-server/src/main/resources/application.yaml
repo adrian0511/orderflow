@@ -1,15 +1,16 @@
 spring:
   application:
-    name: user-service
+    name: auth-server
+
 
   kafka:
     bootstrap-servers: localhost:9092
 
   # Database configuration
   datasource:
-    url: jdbc:postgresql://localhost:5432/userdb
-    username: ${USER_DB_USER}
-    password: ${USER_DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/authdb
+    username: ${AUTH_DB_USER}
+    password: ${AUTH_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -21,25 +22,16 @@ spring:
       hibernate:
         format-sql: true
 
-server:
-  port: ${SERVER_PORT:0}
-
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
-  instance:
-    health-check-url-path: /actuator/health
-    status-page-url-path: /actuator/info
-    prefer-ip-address: true
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
-management:
-  health:
-    db:
-      enabled: true
-  endpoint:
-    health:
-      show-details: always
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+server:
+  port: 9000
