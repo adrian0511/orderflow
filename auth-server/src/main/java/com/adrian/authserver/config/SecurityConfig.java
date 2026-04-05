@@ -163,12 +163,14 @@ public class SecurityConfig {
                 if (auth.getPrincipal() instanceof CustomUserDetails user) {
 
                     context.getClaims().subject(user.getId());
+                    String username = user.getUsername();
 
                     List<String> roles = user.getAuthorities().stream()
                             .map(GrantedAuthority::getAuthority)
                             .toList();
 
                     context.getClaims().claim("roles", roles);
+                    context.getClaims().claim("username", username);
                 }
 
             }
