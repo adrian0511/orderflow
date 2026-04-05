@@ -2,6 +2,12 @@ spring:
   application:
     name: product-service
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9000
+
   # Database configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/productdb
