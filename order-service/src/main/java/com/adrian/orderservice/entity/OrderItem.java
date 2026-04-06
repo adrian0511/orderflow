@@ -20,6 +20,7 @@ public class OrderItem {
 
     @Column(nullable = false)
     private String productId;
+    private String productName;
     private Integer quantity;
     private BigDecimal unitPrice;
 

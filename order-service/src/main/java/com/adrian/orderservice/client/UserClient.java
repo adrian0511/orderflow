@@ -1,5 +1,6 @@
 package com.adrian.orderservice.client;
 
+import com.adrian.orderservice.dto.response.UserResponse;
 import feign.RequestInterceptor;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface UserClient {
 
     @GetMapping("/{id}")
-    void getByUserId(@PathVariable String id);
+    UserResponse getByUserId(@PathVariable String id);
 }
 
 @Configuration

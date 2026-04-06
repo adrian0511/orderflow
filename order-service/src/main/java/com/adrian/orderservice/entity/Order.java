@@ -24,6 +24,12 @@ public class Order {
     @Column(nullable = false)
     private String userId;
 
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String userEmail;
+
     @Column(scale = 2)
     private BigDecimal totalAmount;
 

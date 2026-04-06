@@ -6,8 +6,10 @@ import com.adrian.orderservice.dto.event.OrderStockReservedEvent;
 import com.adrian.orderservice.dto.request.InventoryRequest;
 import com.adrian.orderservice.dto.request.OrderItemRequest;
 import com.adrian.orderservice.dto.request.OrderRequest;
+import com.adrian.orderservice.dto.response.OrderItemResponse;
 import com.adrian.orderservice.dto.response.OrderResponse;
 import com.adrian.orderservice.dto.response.ProductResponse;
+import com.adrian.orderservice.dto.response.UserResponse;
 import com.adrian.orderservice.entity.Order;
 import com.adrian.orderservice.entity.OrderItem;
 import com.adrian.orderservice.exception.OrderNotFoundException;
@@ -45,10 +47,12 @@ public class OrderServiceImpl implements IOrderService {
     @Transactional
     public OrderResponse create(OrderRequest request, String userId) {
 
-        userIntegrationService.validUserExists(userId);
+        UserResponse user = userIntegrationService.getUserById(userId);
 
         Order order = Order.builder()
                 .userId(userId)
+                .username(user.getUsername())
+                .userEmail(user.getEmail())
                 .status(Status.CREATED)
                 .paymentToken(request.getPaymentToken())
                 .createdAt(LocalDateTime.now())
@@ -63,6 +67,7 @@ public class OrderServiceImpl implements IOrderService {
             item.setQuantity(itemRequest.getQuantity());
             item.setUnitPrice(product.getPrice());
             item.setOrder(order);
+            item.setProductName(product.getName());
             items.add(item);
             total = total.add(product.getPrice().multiply(BigDecimal.valueOf(itemRequest.getQuantity())));
         }
@@ -110,14 +115,29 @@ public class OrderServiceImpl implements IOrderService {
         order.setStatus(Status.COMPLETED);
         repository.save(order);
 
-        for (OrderItem item : order.getItems()) {
-            OrderCompletedEvent completedEvent = OrderCompletedEvent.builder()
-                    .productId(item.getProductId())
-                    .quantity(item.getQuantity())
-                    .build();
+        OrderCompletedEvent completedEvent = new OrderCompletedEvent();
+        completedEvent.setOrderId(orderId);
+        completedEvent.setUsername(order.getUsername());
+        completedEvent.setUserId(order.getUserId());
+        completedEvent.setTotalAmount(order.getTotalAmount());
+        completedEvent.setConfirmedAt(LocalDateTime.now());
 
-            kafkaTemplate.send("order.completed", completedEvent);
+        List<OrderItemResponse> items = new ArrayList<>();
+
+        for (OrderItem orderItem : order.getItems()) {
+            OrderItemResponse response = new OrderItemResponse();
+            response.setProductId(orderItem.getProductId());
+            response.setQuantity(orderItem.getQuantity());
+            response.setProductName(orderItem.getProductName());
+            response.setUnitPrice(orderItem.getUnitPrice());
+
+            items.add(response);
         }
+
+        completedEvent.setItems(items);
+
+        kafkaTemplate.send("order.completed", completedEvent);
+
 
         log.info("Order {} confirmed after payment", orderId);
     }
@@ -130,14 +150,29 @@ public class OrderServiceImpl implements IOrderService {
         order.setStatus(Status.FAILED);
         repository.save(order);
 
-        for (OrderItem item : order.getItems()) {
-            OrderFailedEvent failedEvent = OrderFailedEvent.builder()
-                    .productId(item.getProductId())
-                    .quantity(item.getQuantity())
-                    .build();
+        OrderFailedEvent failedEvent = new OrderFailedEvent();
+        failedEvent.setFailedAt(LocalDateTime.now());
+        failedEvent.setOrderId(orderId);
+        failedEvent.setUserEmail(order.getUserEmail());
+        failedEvent.setUsername(order.getUsername());
+        failedEvent.setUserId(order.getUserId());
+        failedEvent.setTotalAmount(order.getTotalAmount());
 
-            kafkaTemplate.send("order.failed", failedEvent);
+        List<OrderItemResponse> items = new ArrayList<>();
+
+        for (OrderItem orderItem : order.getItems()) {
+            OrderItemResponse response = new OrderItemResponse();
+            response.setProductId(orderItem.getProductId());
+            response.setQuantity(orderItem.getQuantity());
+            response.setProductName(orderItem.getProductName());
+            response.setUnitPrice(orderItem.getUnitPrice());
+
+            items.add(response);
         }
+
+        failedEvent.setItems(items);
+
+        kafkaTemplate.send("order.failed", failedEvent);
 
         log.info("Order {} failed", orderId);
     }

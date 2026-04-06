@@ -1,6 +1,7 @@
 package com.adrian.orderservice.integration;
 
 import com.adrian.orderservice.client.UserClient;
+import com.adrian.orderservice.dto.response.UserResponse;
 import com.adrian.orderservice.exception.ResourceNotFoundException;
 import com.adrian.orderservice.exception.ServiceUnavailableException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -12,12 +13,12 @@ public class UserIntegrationService {
     @Autowired
     private UserClient client;
 
-    @CircuitBreaker(name = "userService", fallbackMethod = "fallbackValidUserExists")
-    public void validUserExists(String id) {
-        client.getByUserId(id);
+    @CircuitBreaker(name = "userService", fallbackMethod = "fallbackGetUserById")
+    public UserResponse getUserById(String id) {
+        return client.getByUserId(id);
     }
 
-    public void fallbackValidUserExists(String id, Throwable th) {
+    public UserResponse fallbackGetUserById(String id, Throwable th) {
         if (th instanceof ResourceNotFoundException)
             throw (RuntimeException) th;
 
