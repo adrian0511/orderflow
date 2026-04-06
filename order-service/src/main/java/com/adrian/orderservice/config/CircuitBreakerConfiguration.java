@@ -22,6 +22,7 @@ public class CircuitBreakerConfiguration {
                 .permittedNumberOfCallsInHalfOpenState(3)
                 .minimumNumberOfCalls(5)
                 .automaticTransitionFromOpenToHalfOpenEnabled(true)
+                .ignoreExceptions(ResourceNotFoundException.class)
                 .build();
         return registry.circuitBreaker("userService", config);
     }

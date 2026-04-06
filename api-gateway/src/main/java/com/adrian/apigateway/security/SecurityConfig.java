@@ -40,6 +40,7 @@ public class SecurityConfig {
         http
                 .securityMatcher(ServerWebExchangeMatchers.pathMatchers("/api/**"))
                 .authorizeExchange(exchanges -> exchanges
+                        .pathMatchers("/api/fallbacks/**").permitAll()
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

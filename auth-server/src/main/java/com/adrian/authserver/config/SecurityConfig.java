@@ -110,7 +110,15 @@ public class SecurityConfig {
                         .build())
                 .build();
 
-        return new InMemoryRegisteredClientRepository(gatewayClient);
+        RegisteredClient orderClient = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("order-client")
+                .clientSecret(passwordEncoder().encode("order-secret"))
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .scope("inventory.write")
+                .build();
+
+        return new InMemoryRegisteredClientRepository(gatewayClient, orderClient);
     }
 
     @Bean

@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface IOrderService {
 
-    OrderResponse create(OrderRequest request);
-    
+    OrderResponse create(OrderRequest request, String userId);
+
     List<OrderResponse> getOrdersByUserId(String userId);
 
     void paymentCompleted(String orderId);

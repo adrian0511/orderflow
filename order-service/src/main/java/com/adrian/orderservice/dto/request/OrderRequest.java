@@ -10,7 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderRequest {
-    private String userId;
     private List<OrderItemRequest> items;
     private String paymentToken;
 }

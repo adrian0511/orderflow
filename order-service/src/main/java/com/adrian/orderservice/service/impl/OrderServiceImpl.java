@@ -43,12 +43,12 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     @Transactional
-    public OrderResponse create(OrderRequest request) {
+    public OrderResponse create(OrderRequest request, String userId) {
 
-        userIntegrationService.validUserExists(request.getUserId());
+        userIntegrationService.validUserExists(userId);
 
         Order order = Order.builder()
-                .userId(request.getUserId())
+                .userId(userId)
                 .status(Status.CREATED)
                 .paymentToken(request.getPaymentToken())
                 .createdAt(LocalDateTime.now())

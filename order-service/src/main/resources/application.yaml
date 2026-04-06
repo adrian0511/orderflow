@@ -2,6 +2,31 @@ spring:
   application:
     name: order-service
 
+  cloud:
+    openfeign:
+      oauth2:
+        enabled: false
+
+  # OAuth2 Configuration
+  security:
+    oauth2:
+      client:
+        registration:
+          order-inventory-client:
+            provider: auth-server
+            client-id: order-client
+            client-secret: order-secret
+            authorization-grant-type: client_credentials
+            scope:
+              - inventory.write
+        provider:
+          auth-server:
+            token-uri: http://localhost:9000/oauth2/token
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9000
+
+
   kafka:
     bootstrap-servers: localhost:9092
 
