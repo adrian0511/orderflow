@@ -1,6 +1,7 @@
-package com.adrian.orderservice.dto.event;
+package com.adrian.notificationservice.dto.event;
 
-import com.adrian.orderservice.dto.response.OrderItemResponse;
+
+import com.adrian.notificationservice.dto.response.OrderItemResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

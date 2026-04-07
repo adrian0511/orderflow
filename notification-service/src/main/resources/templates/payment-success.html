@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago confirmado - OrderFlow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f9f0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .checkmark {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 35px 30px;
+        }
+
+        .order-badge {
+            background-color: #e6f7e6;
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 14px;
+            color: #11998e;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .order-details {
+            background-color: #f9fafb;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 25px 0;
+            border: 1px solid #e5e7eb;
+        }
+
+        .order-details h3 {
+            font-size: 18px;
+            color: #1f2937;
+            margin-bottom: 15px;
+            border-left: 4px solid #11998e;
+            padding-left: 12px;
+        }
+
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .order-table th {
+            text-align: left;
+            padding: 12px 4px 8px 0;
+            color: #6b7280;
+            font-weight: 500;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .order-table td {
+            padding: 10px 4px;
+            border-bottom: 1px solid #f3f4f6;
+            color: #374151;
+        }
+
+        .total-row {
+            font-weight: 700;
+            font-size: 16px;
+            color: #11998e;
+            border-top: 2px solid #d1fae5;
+        }
+
+        .total-row td {
+            padding-top: 15px;
+        }
+
+        .footer {
+            background-color: #f9fafb;
+            padding: 25px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 25px 20px;
+            }
+
+            .order-details {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="checkmark">
+        </div>
+        <h1>¡Pago exitoso!</h1>
+    </div>
+    <div class="content">
+        <div class="order-badge" th:text="'Pedido: '+${orderId}">Pedido #{orderId}</div>
+        <h2 style="color: #1f2937; font-size: 22px; margin-bottom: 8px;" th:text="'Hola, '+${username}">Hola,
+            {username}</h2>
+        <p>Hemos recibido tu pago correctamente. Tu pedido ya está siendo preparado
+            para envío.</p>
+        <div class="order-details">
+            <h3>
+                Resumen del pedido</h3>
+            <table class="order-table">
+                <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cant.</th>
+                    <th>Precio</th>
+                    <th>Subtotal</th>
+                </tr>
+                </thead>
+                <tbody th:utext="${items}">
+                {items}
+                </tbody>
+                <tfoot>
+                <tr class="total-row">
+                    <td colspan="3" style="text-align: right;"><strong>Total
+                        pagado</strong></td>
+                    <td th:text="${totalAmount}+' USD'"><strong>{totalAmount} {currency}</strong></td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <p>Recibirás una notificación cuando tu pedido sea enviado. Mientras tanto,
+            puedes ver los detalles desde tu panel.</p>
+        <p style="margin-top: 25px;">Gracias por confiar en OrderFlow.<br>¡Disfruta tu
+            compra!</p>
+    </div>
+    <div class="footer"><p th:text="'OrderFlow - Pedido '+${orderId}+' - ' +${date}">OrderFlow - Pedido #{orderId} -
+        {date}</p>
+        <p>Este es un comprobante de pago. No es necesario imprimirlo.</p>
+    </div>
+</div>
+</body>
+</html>

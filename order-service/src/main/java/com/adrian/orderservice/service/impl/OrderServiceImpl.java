@@ -119,6 +119,7 @@ public class OrderServiceImpl implements IOrderService {
         completedEvent.setOrderId(orderId);
         completedEvent.setUsername(order.getUsername());
         completedEvent.setUserId(order.getUserId());
+        completedEvent.setUserEmail(order.getUserEmail());
         completedEvent.setTotalAmount(order.getTotalAmount());
         completedEvent.setConfirmedAt(LocalDateTime.now());
 
@@ -144,7 +145,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     @Transactional
-    public void paymentFailed(String orderId) {
+    public void paymentFailed(String orderId, String reason) {
         Order order = repository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
         order.setStatus(Status.FAILED);
@@ -157,6 +158,7 @@ public class OrderServiceImpl implements IOrderService {
         failedEvent.setUsername(order.getUsername());
         failedEvent.setUserId(order.getUserId());
         failedEvent.setTotalAmount(order.getTotalAmount());
+        failedEvent.setErrorMessage(reason);
 
         List<OrderItemResponse> items = new ArrayList<>();
 

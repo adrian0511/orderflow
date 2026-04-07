@@ -20,7 +20,7 @@ public class PaymentEventListener {
 
     @KafkaListener(topics = "payment.failed", groupId = "order-group")
     public void handlePaymentFailed(PaymentFailedEvent event) {
-        service.paymentFailed(event.getOrderId());
+        service.paymentFailed(event.getOrderId(), event.getErrorMessage());
     }
 
 }

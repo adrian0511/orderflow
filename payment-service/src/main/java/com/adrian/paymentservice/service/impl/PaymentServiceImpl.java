@@ -13,7 +13,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @Slf4j
@@ -31,7 +31,7 @@ public class PaymentServiceImpl implements IPaymentService {
             return;
         }
 
-        boolean success = request.getAmount().compareTo(BigDecimal.ZERO) > 0;
+        boolean success = ThreadLocalRandom.current().nextBoolean();
 
         Payment payment = Payment.builder()
                 .idempotencyKey(request.getIdempotencyKey())

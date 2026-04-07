@@ -27,7 +27,7 @@ public class OrderController {
     }
 
     @GetMapping("/user/{id}")
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.subject")
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.subject")
     public ResponseEntity<List<OrderResponse>> getByUserId(@PathVariable("id") String userId) {
         return ResponseEntity.ok(service.getOrdersByUserId(userId));
     }

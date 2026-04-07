@@ -13,5 +13,5 @@ public interface IOrderService {
 
     void paymentCompleted(String orderId);
 
-    void paymentFailed(String orderId);
+    void paymentFailed(String orderId, String reason);
 }

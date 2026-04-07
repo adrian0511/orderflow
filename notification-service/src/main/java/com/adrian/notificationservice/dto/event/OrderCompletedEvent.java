@@ -1,6 +1,6 @@
-package com.adrian.orderservice.dto.event;
+package com.adrian.notificationservice.dto.event;
 
-import com.adrian.orderservice.dto.response.OrderItemResponse;
+import com.adrian.notificationservice.dto.response.OrderItemResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,13 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderFailedEvent {
+public class OrderCompletedEvent {
     private String orderId;
-    private String username;
     private String userId;
+    private String username;
     private String userEmail;
     private List<OrderItemResponse> items;
     private BigDecimal totalAmount;
-    private LocalDateTime failedAt;
-    private String errorMessage;
+    private LocalDateTime confirmedAt;
 }

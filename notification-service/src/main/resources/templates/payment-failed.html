@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago rechazado – OrderFlow</title>
+    <style>
+        • {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        Body {
+            font-family: ‘Segoe UI’, ‘Helvetica Neue’, Arial, sans-serif;
+            background-color: #fff5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 560px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .icon {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 35px 30px;
+        }
+
+        .alert-box {
+            background-color: #fff0f0;
+            border-left: 4px solid #f5576c;
+            padding: 18px;
+            border-radius: 16px;
+            margin: 20px 0;
+        }
+
+        .alert-box p {
+            margin: 5px 0;
+            color: #c53030;
+        }
+
+        .reason {
+            font-weight: 700;
+            color: #c53030;
+        }
+
+
+        .footer {
+            background-color: #fafafa;
+            padding: 25px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+            font-size: 12px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="icon">
+        </div>
+        <h1>Pago rechazado</h1>
+    </div>
+    <div class="content">
+        <h2 style="color: #1f2937; font-size: 22px;" th:text="'Hola, '+${username}">Hola, {username}</h2>
+        <p>El pago de tu pedido <strong th:text="${orderId}">#{orderId}</strong> no pudo completarse.</p>
+        <div class=”alert-box”>
+            <p th:utext="${reason}"><span class="reason">Motivo:</span> {failureReason}</p>
+            <p th:utext="${amount}"><span class="reason">Monto intentado:</span> {amount} {currency}</p>
+            <p th:utext="${date}"><span class="reason">Fecha del intento:</span> {date}</p>
+        </div>
+        <p>No te preocupes, <strong>el stock de los productos será liberado</strong> y
+            puedes volver a intentar la compra cuando lo desees.</p>
+        <p style="margin-top: 20px;">Si el problema persiste, verifica los datos de tu
+            tarjeta o contacta a tu banco. ¿Necesitas ayuda? Responde a este correo.</p>
+        <p>Atentamente,<br><strong>El equipo de OrderFlow</strong></p>
+    </div>
+    <div class="footer">
+        <p th:text="'OrderFlow - Pedido '+${orderId}">OrderFlow – Pedido #{orderId}</p>
+        <p>Este es un mensaje automático, por favor no respondas directamente.</p>
+    </div>
+</div>
+</body>
+</html>

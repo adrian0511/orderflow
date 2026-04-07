@@ -22,4 +22,5 @@ public class OrderFailedEvent {
     private List<OrderItemResponse> items;
     private BigDecimal totalAmount;
     private LocalDateTime failedAt;
+    private String errorMessage;
 }
