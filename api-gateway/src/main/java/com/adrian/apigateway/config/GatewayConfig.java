@@ -63,6 +63,64 @@ public class GatewayConfig {
                 .route("auth-server", r -> r
                         .path("/api/auth/register", "/oauth2/**", "/login/**",
                                 "/.well-known/**")
+                        .filters(f -> f
+                                .circuitBreaker(cb -> cb
+                                        .setName("authServerCircuitBreaker")
+                                        .setFallbackUri("forward:/api/fallbacks/auth"))
+                                .retry(retryConfig -> retryConfig.setRetries(3)
+                                        .setStatuses(HttpStatus.INTERNAL_SERVER_ERROR)))
+                        .uri("lb://auth-server")
+                )
+
+                // SWAGGER
+
+                .route("swagger-users", r -> r
+                        .path("/v3/api-docs/users")
+                        .filters(f -> f
+                                .rewritePath("/v3/api-docs/users", "/v3/api-docs")
+                                .circuitBreaker(cb -> cb
+                                        .setName("swaggerUserCircuitBreaker")
+                                        .setFallbackUri("forward:/api/fallbacks/docs")))
+                        .uri("lb://user-service")
+                )
+
+                .route("swagger-products", r -> r
+                        .path("/v3/api-docs/products")
+                        .filters(f -> f
+                                .rewritePath("/v3/api-docs/products", "/v3/api-docs")
+                                .circuitBreaker(cb -> cb
+                                        .setName("swaggerProductCircuitBreaker")
+                                        .setFallbackUri("forward:/api/fallbacks/docs")))
+                        .uri("lb://product-service")
+                )
+
+                .route("swagger-inventories", r -> r
+                        .path("/v3/api-docs/inventories")
+                        .filters(f -> f
+                                .rewritePath("/v3/api-docs/inventories", "/v3/api-docs")
+                                .circuitBreaker(cb -> cb
+                                        .setName("swaggerProductCircuitBreaker")
+                                        .setFallbackUri("forward:/api/fallbacks/docs")))
+                        .uri("lb://inventory-service")
+                )
+
+                .route("swagger-orders", r -> r
+                        .path("/v3/api-docs/orders")
+                        .filters(f -> f
+                                .rewritePath("/v3/api-docs/orders", "/v3/api-docs")
+                                .circuitBreaker(cb -> cb
+                                        .setName("swaggerOrderCircuitBreaker")
+                                        .setFallbackUri("forward:/api/fallbacks/docs")))
+                        .uri("lb://order-service")
+                )
+
+                .route("swagger-auth", r -> r
+                        .path("/v3/api-docs/auth")
+                        .filters(f -> f
+                                .rewritePath("/v3/api-docs/auth", "/v3/api-docs")
+                                .circuitBreaker(cb -> cb
+                                        .setName("swaggerAuthCircuitBreaker")
+                                        .setFallbackUri("forward:/api/fallbacks/docs")))
                         .uri("lb://auth-server")
                 )
                 .build();

@@ -34,3 +34,31 @@ eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${server.port}
+
+# OpenAPI configuration
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: User Service
+        url: /v3/api-docs/users
+
+      - name: Product Service
+        url: /v3/api-docs/products
+
+      - name: Inventory Service
+        url: /v3/api-docs/inventories
+
+      - name: Order Service
+        url: /v3/api-docs/orders
+
+      - name: Auth Server
+        url: /v3/api-docs/auth
+  disable-swagger-default-url: true
+  operations-sorter: alpha
+  tags-sorter: alpha
+  display-request-duration: true

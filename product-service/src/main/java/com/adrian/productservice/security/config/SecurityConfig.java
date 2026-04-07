@@ -21,6 +21,11 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final static String[] FREE_RESOURCES_URLS = {
+            "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
+            "/swagger-resources/**", "/api-docs/**", "/webjars/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    CustomAccessDeniedHandler accessDeniedHandler,
@@ -36,6 +41,7 @@ public class SecurityConfig {
 
                                 // PUBLIC
                                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                                .requestMatchers(FREE_RESOURCES_URLS).permitAll()
 
                                 .anyRequest().authenticated())
 

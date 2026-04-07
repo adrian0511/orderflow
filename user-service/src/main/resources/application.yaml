@@ -49,3 +49,10 @@ management:
   endpoint:
     health:
       show-details: always
+
+# OpenAPI configuration
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs

@@ -34,6 +34,10 @@ public class CircuitBreakerController {
         return fallbackResponse("order-service");
     }
 
+    public ResponseEntity<Map<String, String>> docsFallback() {
+        return fallbackResponse("API Docs");
+    }
+
     private ResponseEntity<Map<String, String>> fallbackResponse(String service) {
         Map<String, String> response = new HashMap<>();
         response.put("status", "503");

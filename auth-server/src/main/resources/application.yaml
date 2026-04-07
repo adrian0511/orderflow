@@ -35,3 +35,10 @@ eureka:
 
 server:
   port: 9000
+
+# OpenAPI configuration
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs

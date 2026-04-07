@@ -11,6 +11,12 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {
+
+    private final static String[] FREE_RESOURCES_URLS = {
+            "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
+            "/swagger-resources/**", "/api-docs/**", "/webjars/**"
+    };
+
     @Bean
     @Order(1)
     public SecurityWebFilterChain clientFilterChain(ServerHttpSecurity http) {
@@ -40,6 +46,7 @@ public class SecurityConfig {
         http
                 .securityMatcher(ServerWebExchangeMatchers.pathMatchers("/api/**"))
                 .authorizeExchange(exchanges -> exchanges
+                        .pathMatchers(FREE_RESOURCES_URLS).permitAll()
                         .pathMatchers("/api/fallbacks/**").permitAll()
                         .anyExchange().authenticated()
                 )

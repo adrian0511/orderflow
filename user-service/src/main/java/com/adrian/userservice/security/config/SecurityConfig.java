@@ -23,6 +23,11 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private final static String[] FREE_RESOURCES_URLS = {
+            "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
+            "/swagger-resources/**", "/api-docs/**", "/webjars/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    CustomAccessDeniedHandler accessDeniedHandler,
@@ -37,7 +42,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasAuthority("SCOPE_profile")
                                 .requestMatchers(HttpMethod.PUT, "/api/users/{id}").hasAuthority("SCOPE_profile")
                                 .requestMatchers(HttpMethod.GET, "/api/users/by-username").hasAuthority("SCOPE_profile")
-                                
+
+                                // PUBLIC
+                                .requestMatchers(FREE_RESOURCES_URLS).permitAll()
+
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer -> {
                             httpSecurityOAuth2ResourceServerConfigurer.jwt(jwtConfigurer -> jwtConfigurer
