@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -84,8 +86,11 @@ public class MailServiceImpl implements IMailService {
     @Override
     public void sendWelcomeMail(String username, String email) {
         try {
+            int year = LocalDateTime.now().getYear();
+
             Context cx = new Context();
             cx.setVariable("username", username);
+            cx.setVariable("year", year);
 
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
