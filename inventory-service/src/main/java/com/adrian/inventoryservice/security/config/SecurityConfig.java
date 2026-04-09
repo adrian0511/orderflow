@@ -45,6 +45,7 @@ public class SecurityConfig {
 
                                 // PUBLIC
                                 .requestMatchers(FREE_RESOURCES_URLS).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/inventories/{productId}").permitAll()
 
                                 .anyRequest().authenticated()
                 )
